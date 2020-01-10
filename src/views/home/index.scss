@@ -1,0 +1,27 @@
+.home{
+    height: 100%;
+    .top{
+        height: 32px;
+        width: 100%;
+        /deep/  .el-radio-group .el-radio-button span{width: 70px;}
+    }
+    .bottom{
+        width: 100%;
+        height: calc(100% - 32px);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        .el-menu-vertical-demo{
+            min-width: 70px;
+            height: 100%;
+        }
+        .el-menu-vertical-demo:not(.el-menu--collapse) {
+            width: 200px;
+            min-height: 400px;
+        }
+        .right{
+            width: calc(100% - 70px);
+            height: 100%;
+        }
+    }
+}
