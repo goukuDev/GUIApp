@@ -4,7 +4,7 @@
             <el-button v-for="(item,index) of newslist" :key="index" @click="getNewsList(item.type)">{{item.name}}</el-button>
         </div>
         <div class="list">
-            <div v-for="item of newsdetail" :key="item.uniquekey" @click="todetail(item)">
+            <div v-for="item of newsdetail" :key="item.uniquekey" @click="openWindow(item)">
                 <h2>{{item.title}}</h2>
                 <span>{{item.author_name}}</span>
                 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
@@ -96,11 +96,8 @@ export default {
                 this.newsdetail = res.data.result.data && res.data.result.data.map(o=>Object.assign({},o,{imgUrl:[].concat(Object.keys(o).filter(e=>e.includes('thumbnail_pic_s')))}));
             })
         },
-        todetail(item){
-            this.windows.push(item)
-            this.openWindow(item)
-        },
         openWindow(item){
+            this.windows.push(item)
             this.currentWindow = item;
         },
         closeWindow(wind) {
