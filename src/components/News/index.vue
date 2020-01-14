@@ -1,5 +1,5 @@
 <template>
-    <div class="news">
+    <div class="news" v-loading='newsLoading'>
         <div class="top">
             <el-button v-for="(item,index) of newslist" :key="index" @click="getNewsList(item.type)">{{item.name}}</el-button>
         </div>
@@ -19,6 +19,7 @@
                 {{wind.author_name}}
             </div>
         </div>
+        <!-- 新闻详情 -->
         <transition name="details">
             <detail class="detail" 
             v-if="currentWindow" 
@@ -81,7 +82,8 @@ export default {
             type:'top',
             newsdetail:[],
             windows:[],
-            currentWindow:null
+            currentWindow:null,
+            newsLoading:false,
         }
     },
     components:{detail},
@@ -89,16 +91,21 @@ export default {
         this.getNewsList(this.type)
     },
     methods:{
-        getNewsList(type){
+        async getNewsList(type){
+            this.newsLoading = true;
             this.newsdetail = [];
-            axios.get(`http://toutiao-ali.juheapi.com/toutiao/index?type=${type}`,{headers:{'Authorization':'APPCODE def0b8f2c0304cb59b0a7cdaa24dd000'}})
+            await axios.get(`http://toutiao-ali.juheapi.com/toutiao/index?type=${type}`,{headers:{'Authorization':'APPCODE def0b8f2c0304cb59b0a7cdaa24dd000'}})
             .then(res=>{
+                this.newsLoading = false;
                 this.newsdetail = res.data.result.data && res.data.result.data.map(o=>Object.assign({},o,{imgUrl:[].concat(Object.keys(o).filter(e=>e.includes('thumbnail_pic_s')))}));
             })
         },
         openWindow(item){
-            this.windows.push(item)
-            this.currentWindow = item;
+            let wind = this.windows.find(o => o.uniquekey == item.uniquekey);
+            if(wind)
+                this.currentWindow = item;
+            else
+                this.windows.push(item);this.currentWindow = item;
         },
         closeWindow(wind) {
             this.windows = this.windows.filter(o=>o.uniquekey!=wind.uniquekey);

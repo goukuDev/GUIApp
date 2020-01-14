@@ -10,7 +10,7 @@
     <!-- 底部 -->
     <div class="bottom">
       <!-- 左侧边栏 -->
-      <el-menu default-active="maps" class="el-menu-vertical-demo" :collapse="isCollapse">
+      <el-menu default-active="weather" class="el-menu-vertical-demo" :collapse="isCollapse">
         <el-menu-item v-for="(item,index) of saides" :index="item.type" :key="index" @click="activeType = item.type">
           <i :class="item.icon"></i>
           <span slot="title">{{item.name}}</span>
@@ -18,7 +18,7 @@
       </el-menu>
       <!-- 右侧边栏 -->
       <div class="right">
-        <component :is='activeType'></component>
+        <component :is='activeType' @address='e=>address = e' :address='address'></component>
       </div>
     </div>
   </div>
@@ -34,9 +34,17 @@ export default {
         {name:'天气',type:'weather',icon:'el-icon-menu'},
         {name:'新闻',type:'news',icon:'el-icon-setting'}
       ],
-      activeType:'maps',
-      isCollapse:true,
+      activeType:'weather',
+      isCollapse:false,
       elradiobutton:false,
+      address:{
+        center:{
+          lng: 116.404,
+          lat: 39.915
+        },
+        level: 12,
+        name: "北京市"
+      },
     }
   },
   components:{maps,news,weather},
