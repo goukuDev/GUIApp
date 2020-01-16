@@ -35,6 +35,7 @@ export default {
                 let cityName = data.name;
                 map.setCenter(cityName);
                 this.$emit('address',data)
+                console.log(data)
             }
             let myCity = new BMap.LocalCity();
             myCity.get(myFun);

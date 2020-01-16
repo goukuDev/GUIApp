@@ -11,6 +11,9 @@
         display: flex;
         align-items: center;
         justify-content: center;
+        &.activebottom{
+            height: 100%;
+        }
         .el-menu-vertical-demo{
             width: 70px;
             height: 100%;

@@ -13,6 +13,60 @@
                     font-size: 20px;
                     font-weight: bold;
                     text-indent: 10px;
+                    position: relative;
+                    .showcity{
+                        width: 400px;
+                        height: 400px;
+                        background-color: #fff;
+                        left: 0;
+                        position: absolute;
+                        border-radius: 3px;
+                        z-index: 999;
+                        .title{
+                            font-size: 15px;
+                            height: 20px;
+                            font-weight: normal;
+                        }
+                        .hotcitybox{
+                            font-size: 12px;
+                            font-weight: normal;
+                            height:70px;
+                            span{
+                                float: left;
+                                padding: 3px 5px;
+                                cursor: pointer;
+                            }
+                        }
+                        .searcity{
+                            height: calc(100% - 90px);
+                            text-indent: 0;
+                            padding: 0 10px;
+                            .el-input{
+                                width: calc(100% - 60px);
+                            }
+                            .el-button{
+                                width: 60px;
+                            }
+                            .searcitylist{
+                                height: calc(100% - 33px);
+                                overflow: auto;
+                                font-weight: normal;
+                                font-size: 15px;
+                                li{
+                                    height: 30px;
+                                    cursor: pointer;
+                                    overflow: hidden;
+                                    text-overflow:ellipsis;
+                                    white-space: nowrap;
+                                }
+                            }
+                        }
+                    }
+                    a{
+                        height: 26px;
+                        width: 26px;
+                        cursor: pointer;
+                    }
                 }
                 .weather{
                     height: 50px;

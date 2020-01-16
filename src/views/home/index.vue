@@ -8,7 +8,7 @@
       </el-radio-group>
     </div>
     <!-- 底部 -->
-    <div class="bottom">
+    <div class="bottom" :class="{activebottom:activeType=='weather'}">
       <!-- 左侧边栏 -->
       <el-menu default-active="maps" class="el-menu-vertical-demo" :collapse="isCollapse">
         <el-menu-item v-for="(item,index) of saides" :index="item.type" :key="index" @click="activeType = item.type">
