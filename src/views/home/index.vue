@@ -1,7 +1,7 @@
 <template>
   <div class="home">
     <!-- 头部 -->
-    <div class="top">
+    <div class="top" v-if="activeType!='weather'">
       <el-radio-group v-model="isCollapse">
         <el-radio-button :label="false">展开</el-radio-button>
         <el-radio-button :label="true">收起</el-radio-button>
@@ -10,7 +10,7 @@
     <!-- 底部 -->
     <div class="bottom">
       <!-- 左侧边栏 -->
-      <el-menu default-active="weather" class="el-menu-vertical-demo" :collapse="isCollapse">
+      <el-menu default-active="maps" class="el-menu-vertical-demo" :collapse="isCollapse">
         <el-menu-item v-for="(item,index) of saides" :index="item.type" :key="index" @click="activeType = item.type">
           <i :class="item.icon"></i>
           <span slot="title">{{item.name}}</span>
@@ -34,9 +34,8 @@ export default {
         {name:'天气',type:'weather',icon:'el-icon-menu'},
         {name:'新闻',type:'news',icon:'el-icon-setting'}
       ],
-      activeType:'weather',
+      activeType:'maps',
       isCollapse:false,
-      elradiobutton:false,
       address:{
         center:{
           lng: 116.404,
@@ -48,6 +47,12 @@ export default {
     }
   },
   components:{maps,news,weather},
+  watch:{
+    activeType(val,oldval){
+      if(val == 'weather')
+        this.isCollapse = true;
+    }
+  }
 }
 </script>
 <style lang="scss" scoped>

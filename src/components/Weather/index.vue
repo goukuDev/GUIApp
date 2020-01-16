@@ -1,15 +1,21 @@
 <template>
-    <div class="weather" v-loading='weatherLoading'>
+    <div class="weatherbox" v-loading='weatherLoading'>
         <div class="topweather" v-if="weatherData">
             <div class="left">
                 <div class="city">{{weatherData.city}}</div>
-                <div>{{weatherData.weather}}</div>
-                <img :src="require(`../../../static/img/icon/${weatherData.img}.png`)"/>
-                <div>最低温度:{{weatherData.templow}}℃</div>
-                <div>在高温度:{{weatherData.temphigh}}℃</div>
+                <div><img :src="require(`../../../static/img/icon/${weatherData.img}.png`)"/></div>
+                <div class="weather">
+                    <div>{{weatherData.temp}}℃</div>
+                    <div>{{weatherData.weather}}</div>
+                    <div class="wind">{{weatherData.winddirect}}{{weatherData.windpower}}</div>
+                    <div>(实时)</div>
+                </div>
+                <!-- <div class="wind">{{weatherData.winddirect}}{{weatherData.windpower}}</div> -->
             </div>
             <div class="right">
-                PM2.5:{{weatherData.aqi.quality}}{{weatherData.aqi.ipm2_5}}
+                <div class='quality' :class="aqipm(weatherData.aqi.quality)">{{weatherData.aqi.quality}}{{weatherData.aqi.ipm2_5}}</div>
+                <div class='aqiinfo'>{{weatherData.aqi.aqiinfo.affect}}</div>
+                <div class='aqiinfo'>{{weatherData.aqi.aqiinfo.measure}}</div>
             </div>
         </div>
         <!-- 一周天气显示 -->
@@ -17,8 +23,16 @@
             <swiper v-if="weatherData" :options='swiperOptionWeek' ref="myswiperweek">
                 <swiper-slide v-for="(item,index) in weatherData.daily" :key="index">
                     <div class="swiperweekdetail">
-                        {{item.week}}
-                        {{item.date}}
+                        <div>{{item.week}}</div>
+                        <div>{{item.date}}</div>
+                        <img :src="require(`../../../static/img/icon/${item.day.img}.png`)"/>
+                        <div>{{`${item.night.templow==item.day.temphigh? item.day.temphigh:item.day.temphigh+'~'+item.night.templow}`}}℃</div>
+                        <div>{{`${item.day.weather==item.night.weather? item.day.weather:item.day.weather+'转'+item.night.weather}`}}</div>
+                        <div>
+                            {{`${item.day.winddirect==item.night.winddirect? item.day.winddirect:item.day.winddirect+'转'+item.night.winddirect}`}}
+                            {{`${item.day.windpower==item.night.windpower? item.day.windpower:item.day.windpower+'~'+item.night.windpower}`}}
+                        </div>
+                        <div>日出:{{item.sunrise}}日落:{{item.sunset}}</div>
                     </div>
                 </swiper-slide>
             </swiper>
@@ -29,9 +43,9 @@
                 <swiper-slide v-for="(item,index) in weatherData.hourly" :key="index">
                     <div class="swiperhourlydetail">
                         {{item.time}}
+                        <img :src="require(`../../../static/img/icon/${item.img}.png`)"/>
                         {{item.weather}}
                         {{item.temp}}℃
-                        <img :src="require(`../../../static/img/icon/${item.img}.png`)"/>
                     </div>
                 </swiper-slide>
             </swiper>
@@ -40,6 +54,7 @@
 </template>
 <script>
 import axios from 'axios';
+import swiper from 'swiper';
 export default {
     props:['address'],
     data(){
@@ -51,14 +66,16 @@ export default {
                 observer: true,
                 observeParents: true,
                 speed: 500,
-                silders:'3'
+                slidesPerView: 3,
+                spaceBetween: 20,
             },
             swiperOptionHourly: {
                 observer: true,
                 observeParents: true,
                 speed: 500,
-                silders:'3'
-            }
+                slidesPerView: 10,
+            },
+            chartLine:null,
         }
     },
     mounted(){
@@ -83,6 +100,22 @@ export default {
             .catch(err=>{
                 console.log(err)
             })
+        },
+        aqipm(data){
+            switch(data){
+                case '优':
+                    return 'one';
+                case '良':
+                    return 'two';
+                case '轻度污染':
+                    return 'three';
+                case '中度污染':
+                    return 'four';
+                case '重度污染':
+                    return 'five';
+                case '严重污染':
+                    return 'six';
+            }
         }
     }
 }
